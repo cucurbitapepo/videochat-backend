@@ -1,7 +1,7 @@
 port: 7880
 
 keys:
-  ${LIVEKIT_API_KEY}: ${LIVEKIT_API_SECRET}
+  devkey: secret_that_has_to_be_changed_for_production
 
 rtc:
   port_range_start: 50000
@@ -19,7 +19,7 @@ turn:
   enabled: true
   udp_port: 3478
   tls_port: 5349
-  domain: ${SERVER_API}
+  domain: "84.54.59.153"
   cert_file: "/livekit/certs/cert.pem"
   key_file: "/livekit/certs/key.pem"
   relay_range_start: 1024

@@ -60,6 +60,10 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+springBoot {
+    mainClass = 'com.videochatapi.VideoChatApiApplication'
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
