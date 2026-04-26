@@ -29,6 +29,10 @@ services:
     environment:
       - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
       - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
+    deploy:
+      resources:
+        limits:
+          memory: 1G
     networks:
       - videochat-net
     restart: unless-stopped
