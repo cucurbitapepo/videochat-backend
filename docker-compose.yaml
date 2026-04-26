@@ -21,7 +21,7 @@ services:
       - "7881:7881"
       - "3489:3478/udp"
       - "3490:5349/tcp"
-      - "50000-60000:50000-60000/udp"
+      - "50000-50500:50000-50500/udp"
     volumes:
       - ./livekit/livekit.yaml:/livekit/livekit.yaml
       - ./livekit/certs:/livekit/certs
@@ -43,14 +43,14 @@ services:
     ports:
       - "8443:8443"
     volumes:
-      - ./keystore.p12:/app/keystore.p12
+      - ./src/main/resources/keystore.p12:/app/keystore.p12
     environment:
       - JAVA_OPTS=-Xms512m -Xmx1536m
       - SERVER_PORT=8443
       - DB_URL=${DB_URL}
       - DB_USERNAME=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
-      - KEY_STORE_PATH=file:/app/keystore.p12
+      - KEY_STORE_PATH=${KEY_STORE_PATH}
       - KEY_ALIAS=${KEY_ALIAS}
       - KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD}
       - CORS_ORIGINS=${CORS_ORIGINS}

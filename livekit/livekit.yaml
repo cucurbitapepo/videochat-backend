@@ -5,7 +5,7 @@ keys:
 
 rtc:
   port_range_start: 50000
-  port_range_end: 60000
+  port_range_end: 50500
   tcp_port: 7881
   use_external_ip: false
   node_ip: 10.0.2.2
