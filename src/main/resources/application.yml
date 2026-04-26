@@ -52,7 +52,7 @@ spring:
 app:
   livekit:
     internal-url: ${LIVEKIT_INTERNAL_URL:http://localhost:7880}
-    external-url: ${LIVEKIT_EXTERNAL_URL:http://10.0.2.2:7880}
+    external-url: ${LIVEKIT_EXTERNAL_URL:http://84.54.59.153:7880}
     api-key: ${LIVEKIT_API_KEY:devkey}
     api-secret: ${LIVEKIT_API_SECRET:secret_that_has_to_be_changed_for_production}
 

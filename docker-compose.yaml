@@ -39,6 +39,7 @@ services:
     ports:
       - "8443:8443"
     environment:
+      - JAVA_OPTS=-Xms512m -Xmx1536m
       - SERVER_PORT=8443
       - DB_URL=${DB_URL}
       - DB_USERNAME=${DB_USER}
@@ -46,6 +47,10 @@ services:
       - KEY_ALIAS=${KEY_ALIAS}
       - KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD}
       - CORS_ORIGINS=${CORS_ORIGINS}
+    deploy:
+      resources:
+        limits:
+          memory: 2G
     depends_on:
       - postgres
       - livekit
