@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: videochat-db
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - videochat-net
+
+  livekit:
+    image: livekit/livekit-server:latest
+    container_name: livekit-server
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+      - "3489:3478/udp"
+      - "3490:5349/tcp"
+      - "50000-60000:50000-60000/udp"
+    volumes:
+      - ./livekit/livekit.yaml:/livekit/livekit.yaml
+      - ./livekit/certs:/livekit/certs
+    command: --config /livekit/livekit.yaml
+    environment:
+      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
+      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
+    networks:
+      - videochat-net
+    restart: unless-stopped
+
+  api:
+    build: .
+    container_name: videochat-api
+    ports:
+      - "8443:8443"
+    environment:
+      - SERVER_PORT=8443
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - KEY_ALIAS=${KEY_ALIAS}
+      - KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+    depends_on:
+      - postgres
+      - livekit
+    networks:
+      - videochat-net
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+
+networks:
+  videochat-net:
+    driver: bridge

@@ -1,0 +1,68 @@
+server:
+  port: 8443
+  servlet:
+    context-path: /api/v1
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: classpath:keystore.p12
+    key-store-password: ${KEY_STORE_PASSWORD:password}
+    key-alias: ${KEY_ALIAS:tomcat}
+
+security:
+  jwt:
+    secret: ${JWT_SECRET_KEY:aW5jcmVkaWJseS1sb25nLXNlY3JldC1rZXktZm9yLXNlY3VyZS1qd3Qtc2FtcGxldGV4dA==}
+    expiration: 86400000 # 24 hours
+
+spring:
+  profiles:
+    active: dev
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: VideoChatAPI
+  sql:
+    init:
+      mode: never
+  liquibase:
+    enabled: true
+    change-log: classpath:liquibase/db.changelog.yaml
+    default-schema: videochat
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/videochat}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: update # set to validate for prod
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show_sql: false
+        default_schema: videochat
+  web:
+    resources:
+      add-mappings: false
+    error:
+      whitelabel:
+        enabled: false
+
+app:
+  livekit:
+    internal-url: ${LIVEKIT_INTERNAL_URL:http://localhost:7880}
+    external-url: ${LIVEKIT_EXTERNAL_URL:http://10.0.2.2:7880}
+    api-key: ${LIVEKIT_API_KEY:devkey}
+    api-secret: ${LIVEKIT_API_SECRET:secret_that_has_to_be_changed_for_production}
+
+cors:
+  allowed-origins: ${CORS_ORIGINS:http://localhost:8080}
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: Authorization,Content-Type
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    com.example.backend: DEBUG

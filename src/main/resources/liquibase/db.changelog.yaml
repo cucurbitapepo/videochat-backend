@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - includeAll:
+      path: /pre-migrations
+      relativeToChangelogFile: true
+      errorIfMissing: false
+  - includeAll:
+      path: /changesets
+      relativeToChangelogFile: true
+      errorIfMissing: false
