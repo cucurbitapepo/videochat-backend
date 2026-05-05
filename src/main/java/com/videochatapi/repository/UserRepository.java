@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   @Query(value = "SELECT u FROM User u " +
                  "WHERE u.username ILIKE CONCAT('%', :query, '%') " +
                  "AND u.id != :currentUserId " +
-                 "ORDER BY SIMILARITY(LOWER(u.username), LOWER(:query)) DESC",
+                 "ORDER BY videochat.SIMILARITY(LOWER(u.username), LOWER(:query)) DESC",
           countQuery = "SELECT COUNT(u) FROM User u " +
                        "WHERE u.username ILIKE CONCAT('%', :query, '%') " +
                        "AND u.id != :currentUserId")
@@ -33,7 +33,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   @Query(value = "SELECT * FROM videochat.users u " +
                  "WHERE u.username ILIKE '%' || :query || '%' " +
                  "AND u.id != :currentUserId " +
-                 "ORDER BY SIMILARITY(LOWER(u.username), LOWER(:query)) DESC " +
+                 "ORDER BY videochat.SIMILARITY(LOWER(u.username), LOWER(:query)) DESC " +
                  "LIMIT 20",
           nativeQuery = true)
   List<User> searchSimilarUsers(
