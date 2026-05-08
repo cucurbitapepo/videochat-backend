@@ -12,13 +12,11 @@ import com.videochatapi.repository.UserRepository;
 import com.videochatapi.security.CurrentUserProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -164,5 +162,33 @@ public class CallService {
     response.setServerUrl(appProperties.getLivekit().getExternalUrl());
 
     return response;
+  }
+
+  @Transactional(readOnly = true)
+  public boolean isParticipant(String callId, String username) {
+    return callRepository.findByCallId(callId)
+            .map(call -> call.isParticipantByUsername(username))
+            .orElse(false);
+  }
+
+  @Transactional(readOnly = true)
+  public boolean canDistributeKeys(String callId, String username) {
+    Call call = callRepository.findByCallId(callId).orElse(null);
+    if (call == null) return false;
+
+    if (call.getCaller() != null && call.getCaller().getUsername().equals(username)) {
+      return true;
+    }
+
+    return call.isParticipantByUsername(username) && call.getStatus() == CallStatus.ACTIVE;
+  }
+
+  @Transactional(readOnly = true)
+  public List<String> getParticipantUsernames(String callId) {
+    return callRepository.findByCallId(callId)
+            .map(call -> call.getParticipants().stream()
+                    .map(User::getUsername)
+                    .toList())
+            .orElse(List.of());
   }
 }

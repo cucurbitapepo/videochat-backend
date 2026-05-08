@@ -45,4 +45,9 @@ public class Call {
   public boolean isParticipant(User user) {
     return participants.contains(user);
   }
+
+  public boolean isParticipantByUsername(String username) {
+    return participants.stream()
+            .anyMatch(user -> user.getUsername().equals(username));
+  }
 }
