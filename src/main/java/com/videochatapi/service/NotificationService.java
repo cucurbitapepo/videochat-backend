@@ -39,7 +39,7 @@ public class NotificationService {
     }
   }
 
-  public void sendCallRequest(Long callerId, Long receiverId, String callId, String callerName) {
+  public void sendCallRequest(Long callerId, Long receiverId, String callId, String callerName, String initiatorDhPublicKey) {
 
     NotificationDto notification = new NotificationDto(
             "CALL_REQUEST",
@@ -47,7 +47,8 @@ public class NotificationService {
             callId,
             callerId,
             callerName,
-            System.currentTimeMillis()
+            System.currentTimeMillis(),
+            initiatorDhPublicKey
     );
 
     sendNotificationToUser(receiverId, notification);

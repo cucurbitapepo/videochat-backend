@@ -58,11 +58,19 @@ public class CallService {
 
     call.addParticipant(caller);
 
+    String initiatorDhPublicKey = callDto.getInitiatorDhPublicKey();
+
     callDto.getParticipants().forEach(userId -> {
       User user = userRepository.findById(userId)
               .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
       call.addParticipant(user);
-      notificationService.sendCallRequest(caller.getId(), user.getId(), call.getCallId(), caller.getUsername());
+      notificationService.sendCallRequest(
+              caller.getId(),
+              user.getId(),
+              call.getCallId(),
+              caller.getUsername(),
+              initiatorDhPublicKey
+      );
     });
 
     Call savedCall = callRepository.save(call);

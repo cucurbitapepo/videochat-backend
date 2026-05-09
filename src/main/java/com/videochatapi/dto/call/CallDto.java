@@ -17,6 +17,7 @@ public class CallDto {
   private CallStatus status;
   private LocalDateTime createdAt;
   private LocalDateTime endedAt;
+  private String initiatorDhPublicKey;
 
   public static CallDto createRequest(Long receiverId) {
     CallDto dto = new CallDto();
