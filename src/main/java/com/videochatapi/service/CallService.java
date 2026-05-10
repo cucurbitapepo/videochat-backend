@@ -44,7 +44,10 @@ public class CallService {
   public CallDto createCall(CallDto callDto) {
     User caller = currentUserProvider.getCurrentUser();
 
-    String roomName = "call-" + System.currentTimeMillis();
+    String roomName = callDto.getCallId() != null && !callDto.getCallId().isEmpty()
+            ? callDto.getCallId()
+            : "call-" + System.currentTimeMillis();
+
     try {
       liveKitService.createRoom(roomName, 10);
     } catch (Exception e) {
