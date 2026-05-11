@@ -1,13 +1,10 @@
 server:
-  port: 8443
+  port: 8080
   servlet:
     context-path: /api/v1
   ssl:
-    enabled: true
-    key-store-type: PKCS12
-    key-store: ${KEY_STORE_PATH}
-    key-store-password: ${KEY_STORE_PASSWORD:password}
-    key-alias: ${KEY_ALIAS:tomcat}
+    enabled: false
+  forward-headers-strategy: native
 
 security:
   jwt:
@@ -16,7 +13,7 @@ security:
 
 spring:
   profiles:
-    active: dev
+    active: prod
   config:
     import: optional:file:.env[.properties]
   application:
@@ -35,7 +32,7 @@ spring:
     password: ${DB_PASSWORD:postgres}
   jpa:
     hibernate:
-      ddl-auto: update # set to validate for prod
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
