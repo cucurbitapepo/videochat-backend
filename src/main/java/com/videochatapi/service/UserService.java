@@ -29,6 +29,7 @@ public class UserService {
   private final CurrentUserProvider currentUserProvider;
   private final UserPresentationMapper userPresentationMapper;
 
+  @Transactional(readOnly = false)
   public void updateFcmToken(Long userId, String token, LocalDateTime expiry) {
     userRepository.updateFcmToken(userId, token, expiry);
   }

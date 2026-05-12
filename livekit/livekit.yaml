@@ -20,6 +20,8 @@ turn:
   udp_port: 3478
   tls_port: 5349
   domain: "vkr-videochat.duckdns.org"
+  cert_file: "/livekit/certs/fullchain.pem"
+  key_file: "/livekit/certs/privkey.pem"
   relay_range_start: 1024
   relay_range_end: 30000
 

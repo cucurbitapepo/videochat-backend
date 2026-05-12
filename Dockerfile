@@ -16,6 +16,6 @@ WORKDIR /app
 
 COPY --from=builder /home/gradle/project/build/libs/*.jar app.jar
 
-EXPOSE 8443
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
