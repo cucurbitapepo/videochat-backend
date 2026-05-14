@@ -4,5 +4,6 @@ public enum CallStatus {
   WAITING,
   ACTIVE,
   ENDED,
-  REJECTED
+  REJECTED,
+  CANCELLED
 }

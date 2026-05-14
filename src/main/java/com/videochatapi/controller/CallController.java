@@ -41,6 +41,11 @@ public class CallController {
     return ResponseEntity.ok(callService.endCall(callId));
   }
 
+  @PostMapping("/{callId}/cancel")
+  public ResponseEntity<CallDto> cancelCall(@PathVariable String callId) {
+    return ResponseEntity.ok(callService.cancelCall(callId));
+  }
+
   @GetMapping("/active")
   public ResponseEntity<List<CallDto>> getActiveCalls() {
     return ResponseEntity.ok(callService.getActiveCalls());

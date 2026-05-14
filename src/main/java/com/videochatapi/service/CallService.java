@@ -116,6 +116,37 @@ public class CallService {
     return CallDto.fromEntity(savedCall);
   }
 
+  public CallDto cancelCall(String callId) {
+    User currentUser = currentUserProvider.getCurrentUser();
+    Call call = callRepository.findByCallId(callId)
+            .orElseThrow(() -> new CallNotFoundException("Call not found"));
+
+    if (!call.getCaller().getId().equals(currentUser.getId())) {
+      throw new IllegalArgumentException("Only caller can cancel the call");
+    }
+    if (call.getStatus() != CallStatus.WAITING) {
+      throw new IllegalStateException("Cannot cancel call with status: " + call.getStatus());
+    }
+
+    call.setStatus(CallStatus.CANCELLED);
+    call.setEndedAt(LocalDateTime.now());
+    Call savedCall = callRepository.save(call);
+
+    call.getParticipants().stream()
+            .filter(user -> !user.getId().equals(currentUser.getId()))
+            .forEach(user ->
+                    notificationService.sendCallStatus(call.getCallId(), "cancelled", user.getId())
+            );
+
+    try {
+      liveKitService.deleteRoom(callId);
+    } catch (Exception e) {
+      log.warn("Failed to delete LiveKit room on cancel: {}", callId, e);
+    }
+
+    return CallDto.fromEntity(savedCall);
+  }
+
   public CallDto endCall(String callId) {
     User currentUser = currentUserProvider.getCurrentUser();
     Call call = callRepository.findByCallId(callId)
